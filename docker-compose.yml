@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  ptw-api:
+    image: ${DOCKER_REGISTRY-}ptwapi
+    build:
+      context: .
+      dockerfile: PTW-API/Dockerfile
+  #seq:
+  #  image: datalust/seq:latest
+  #  ports:
+  #    - 80:80
+  #    - 5341:5341
+  #  environment:
+  #    ACCEPT_EULA: Y
