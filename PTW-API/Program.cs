@@ -16,7 +16,7 @@ builder.Services.AddPTWSettings(builder.Configuration, builder.Environment)
                 .AddSwaggerGen()
                 .AddCors()
                 .AddHealthChecks();
-
+/*
 var conStrBuilder = new SqlConnectionStringBuilder(builder.Configuration.GetConnectionString("PTW"));
 
 conStrBuilder.Password = builder.Configuration["Db:Password"];
@@ -24,7 +24,7 @@ conStrBuilder.UserID = builder.Configuration["Db:User"];
 
 var connection = conStrBuilder.ConnectionString;
 
-builder.Services.AddTransient<MySqlConnection>(_ => new MySqlConnection(connection));
+builder.Services.AddTransient<MySqlConnection>(_ => new MySqlConnection(connection));*/
 
 #endregion
 
