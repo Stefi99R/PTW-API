@@ -1,7 +1,7 @@
+using Hangfire;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using MySqlConnector;
+using PTW_API.Contracts;
 using PTW_API.Services;
-using System.Data.SqlClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +15,9 @@ builder.Services.AddPTWSettings(builder.Configuration, builder.Environment)
                 .AddEndpointsApiExplorer()
                 .AddSwaggerGen()
                 .AddCors()
+                .AddJobsConfig()
                 .AddHealthChecks();
+
 /*
 var conStrBuilder = new SqlConnectionStringBuilder(builder.Configuration.GetConnectionString("PTW"));
 
@@ -65,6 +67,10 @@ app.UseStaticFiles()
    .AllowAnyOrigin()
    .AllowAnyMethod()
    .AllowAnyHeader());
+
+app.UseHangfire();
+
+app.AddBackgroundJobs();
 
 #endregion
 
