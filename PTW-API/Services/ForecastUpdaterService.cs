@@ -7,16 +7,21 @@
     using PTW.Domain.Utils.Deserializers.Forecast;
     using PTW.Domain.Storage.Forecast.Domain;
     using PTW.Domain.Utils.Mappers;
+    using PTW.Domain.Storage.Forecast.Repositories.Abstractions;
 
     public class ForecastUpdaterService : IForecastUpdaterService
     {
         private static HttpClient _httpClient = new HttpClient();
 
+        private static IForecastRepository _forecastRepository;
+
         private IServiceProvider ServiceProvider;
 
-        public ForecastUpdaterService(IServiceProvider serviceProvider)
+        public ForecastUpdaterService(IServiceProvider serviceProvider, 
+                                      IForecastRepository forecastRepository = null)
         {
             ServiceProvider = serviceProvider;
+            _forecastRepository = forecastRepository;
         }
 
         public async Task UpdateForecastAsync()
@@ -24,13 +29,26 @@
             ISecretsManagerSettings? secretsManager = ServiceProvider.GetService<ISecretsManagerSettings>();
             IForecastSettings? forecastSettings = ServiceProvider.GetService<IForecastSettings>();
 
+            List<Forecast> forecasts = Task.Run(() => FetchForecasts(secretsManager, forecastSettings)).Result;
+
+            forecasts.ForEach(dailyForecast =>
+            {
+                _forecastRepository.Insert(dailyForecast);
+            });
+        }
+
+        private async Task<List<Forecast>> FetchForecasts(ISecretsManagerSettings? secretsManager, 
+                                                          IForecastSettings? forecastSettings)
+        {
+            List<Forecast> forecasts = new List<Forecast>();
+
             forecastSettings?.Cities?.ForEach(async city =>
             {
-                HttpResponseMessage response = await _httpClient.GetAsync(forecastSettings.ApiUrl
-                                                                          + $"?lat={city.Latitude}" 
-                                                                          + $"&lon={city.Longitude}" 
+                HttpResponseMessage response = Task.Run(() => _httpClient.GetAsync(forecastSettings.ApiUrl
+                                                                          + $"?lat={city.Latitude}"
+                                                                          + $"&lon={city.Longitude}"
                                                                           + $"&appid={secretsManager?.ApiKey}"
-                                                                          + $"&units=metric");
+                                                                          + $"&units=metric")).Result;
 
                 response.EnsureSuccessStatusCode();
 
@@ -38,16 +56,23 @@
                 {
                     string forecastJson = await response.Content.ReadAsStringAsync();
 
-                    StoreForecastToDatabase(forecastJson, city.Name, city.CountryCode);
+                    List<Forecast> forecastForCity = Task.Run(() => MapResponseToForecast(forecastJson, 
+                                                                                          city.Name, 
+                                                                                          city.CountryCode)).Result;
+
+                    forecasts.AddRange(forecastForCity);
                 }
             });
+
+            return forecasts;
         }
 
-        private void StoreForecastToDatabase(string forecastJson, 
-                                             string cityName, 
-                                             string cityCountryCode)
+        private async Task<List<Forecast>> MapResponseToForecast(string forecastJson, 
+                                                                 string cityName, 
+                                                                 string cityCountryCode)
         {
-            WeeklyForecastDeserializer weeklyForecastDeserialized = JsonConvert.DeserializeObject<WeeklyForecastDeserializer>(forecastJson);
+            WeeklyForecastDeserializer weeklyForecastDeserialized = JsonConvert
+                .DeserializeObject<WeeklyForecastDeserializer>(forecastJson);
 
             List<Forecast> forecasts = new List<Forecast>();
 
@@ -58,8 +83,7 @@
                                                                cityCountryCode: cityCountryCode));
             });
 
-            Console.WriteLine(forecasts);
-            // save to db
+            return forecasts;
         }
     }
 }
