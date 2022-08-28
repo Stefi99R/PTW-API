@@ -3,8 +3,10 @@
     using PTW_API.Contracts;
     using System.Threading.Tasks;
     using System.Net.Http;
-    using PTW.Domain.Entities.Forecast.Domain;
     using Newtonsoft.Json;
+    using PTW.Domain.Utils.Deserializers.Forecast;
+    using PTW.Domain.Storage.Forecast.Domain;
+    using PTW.Domain.Utils.Mappers;
 
     public class ForecastUpdaterService : IForecastUpdaterService
     {
@@ -24,12 +26,11 @@
 
             forecastSettings?.Cities?.ForEach(async city =>
             {
-                ForecastDeserializer forecast = null;
-
                 HttpResponseMessage response = await _httpClient.GetAsync(forecastSettings.ApiUrl
                                                                           + $"?lat={city.Latitude}" 
                                                                           + $"&lon={city.Longitude}" 
-                                                                          + $"&appid={secretsManager?.ApiKey}");
+                                                                          + $"&appid={secretsManager?.ApiKey}"
+                                                                          + $"&units=metric");
 
                 response.EnsureSuccessStatusCode();
 
@@ -37,9 +38,28 @@
                 {
                     string forecastJson = await response.Content.ReadAsStringAsync();
 
-                    forecast = JsonConvert.DeserializeObject<ForecastDeserializer>(forecastJson);
+                    StoreForecastToDatabase(forecastJson, city.Name, city.CountryCode);
                 }
             });
+        }
+
+        private void StoreForecastToDatabase(string forecastJson, 
+                                             string cityName, 
+                                             string cityCountryCode)
+        {
+            WeeklyForecastDeserializer weeklyForecastDeserialized = JsonConvert.DeserializeObject<WeeklyForecastDeserializer>(forecastJson);
+
+            List<Forecast> forecasts = new List<Forecast>();
+
+            weeklyForecastDeserialized.Daily.ForEach(dailyForecast =>
+            {
+                forecasts.Add(ForecastDeserializedToEntity.Map(dailyForecastDeserializer: dailyForecast, 
+                                                               cityName: cityName, 
+                                                               cityCountryCode: cityCountryCode));
+            });
+
+            Console.WriteLine(forecasts);
+            // save to db
         }
     }
 }

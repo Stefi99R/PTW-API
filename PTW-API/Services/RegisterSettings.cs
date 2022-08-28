@@ -23,6 +23,8 @@
 
             services.AddSingleton<IForecastSettings, ForecastSettings>();
 
+            services.AddSingleton<IConnectionStringSettings, ConnectionStringSettings>();
+
             return services;
         }
     }
