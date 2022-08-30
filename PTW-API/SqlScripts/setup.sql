@@ -1,8 +1,8 @@
 CREATE DATABASE ptw;
 CREATE DATABASE ptw_jobs;
 
-CREATE TABLE ptw.forecasts (
-	id int primary key,
+CREATE TABLE ptw.forecast (
+	id int auto_increment not null primary key,
 	created_on datetime not null,
 	deleted_on datetime null,
 	forecast_date date not null,

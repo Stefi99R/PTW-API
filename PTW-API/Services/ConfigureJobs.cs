@@ -35,7 +35,8 @@
 
             services.AddScoped<IBackgroundJobClient>(sp => new BackgroundJobClient(JobStorage.Current));
 
-            services.AddTransient<IForecastUpdaterService>(forSer => new ForecastUpdaterService(provider));
+            services.AddHttpClient<IForecastService, OpenWeatherMapService>();
+            services.AddTransient<IForecastUpdaterService, ForecastUpdaterService>();
 
             return services;
         }

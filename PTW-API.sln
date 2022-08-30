@@ -9,12 +9,7 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PTW.Tests", "PTW.Tests\PTW.Tests.csproj", "{8F61BCF7-8FBC-4B2D-A3DC-9D7219CA6B1E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SqlScripts", "SqlScripts", "{9C85B66A-C1DC-4891-8A01-6E4D7519D332}"
-	ProjectSection(SolutionItems) = preProject
-		setup.ddl = setup.ddl
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTW.Domain", "..\PTW.Domain\PTW.Domain.csproj", "{0CAB1806-8C14-40F6-A1E2-FB82D556C53F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PTW.Domain", "..\PTW.Domain\PTW.Domain.csproj", "{0CAB1806-8C14-40F6-A1E2-FB82D556C53F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
