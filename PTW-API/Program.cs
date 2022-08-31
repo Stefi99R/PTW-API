@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using MySqlConnector;
 using PTW_API.Services;
-using System.Data.SqlClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,19 +10,13 @@ builder.Services.AddControllers();
 builder.Services.AddPTWSettings(builder.Configuration, builder.Environment)
                 .AddForwardedHeaders()
                 .RegisterSwaggerDocumentation()
+                .RegisterPTWDatabase()
+                .AddPTWServices()
                 .AddEndpointsApiExplorer()
                 .AddSwaggerGen()
                 .AddCors()
+                .AddJobsConfig()
                 .AddHealthChecks();
-
-var conStrBuilder = new SqlConnectionStringBuilder(builder.Configuration.GetConnectionString("PTW"));
-
-conStrBuilder.Password = builder.Configuration["Db:Password"];
-conStrBuilder.UserID = builder.Configuration["Db:User"];
-
-var connection = conStrBuilder.ConnectionString;
-
-builder.Services.AddTransient<MySqlConnection>(_ => new MySqlConnection(connection));
 
 #endregion
 
@@ -65,6 +57,10 @@ app.UseStaticFiles()
    .AllowAnyOrigin()
    .AllowAnyMethod()
    .AllowAnyHeader());
+
+app.UseHangfire();
+
+app.AddBackgroundJobs();
 
 #endregion
 

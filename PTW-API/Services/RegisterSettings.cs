@@ -19,6 +19,12 @@
 
             services.AddSingleton<ISecretsManagerSettings>(provider => new SecretsManagerSettings(configuration, environment));
 
+            services.AddSingleton<IJobsSettings, JobsSettings>();
+
+            services.AddSingleton<IForecastSettings, ForecastSettings>();
+
+            services.AddSingleton<IConnectionStringSettings, ConnectionStringSettings>();
+
             return services;
         }
     }
