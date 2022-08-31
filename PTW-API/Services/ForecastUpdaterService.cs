@@ -7,20 +7,21 @@
 
     public class ForecastUpdaterService : IForecastUpdaterService
     {
-        private readonly IForecastService openWeatherMapService;
+        private readonly IForecastService _forecastService;
         private readonly IForecastRepository _forecastRepository;
 
-        public ForecastUpdaterService(IForecastService openWeatherMapService,
+        public ForecastUpdaterService(IForecastService forecastService,
                                       IForecastRepository forecastRepository = null)
         {
-            this.openWeatherMapService = openWeatherMapService;
+            _forecastService = forecastService;
             _forecastRepository = forecastRepository;
         }
 
         public async Task UpdateForecastAsync()
         {
-            List<Forecast> forecasts = await openWeatherMapService.FetchForecasts();
-            _forecastRepository.InsertMany(forecasts);
+            List<Forecast> forecasts = await _forecastService.FetchForecasts();
+
+            _forecastRepository.AddOrUpdateMany(forecasts);
         }
     }
 }

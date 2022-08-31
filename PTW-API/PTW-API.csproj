@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\PTW.Domain\PTW.Domain.csproj" />
+    <ProjectReference Include="..\PTW.Domain\PTW.Domain.csproj" />
   </ItemGroup>
 
 </Project>

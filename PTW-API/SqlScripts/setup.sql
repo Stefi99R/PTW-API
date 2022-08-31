@@ -5,7 +5,7 @@ CREATE TABLE ptw.forecast (
 	id int auto_increment not null primary key,
 	created_on datetime not null,
 	deleted_on datetime null,
-	forecast_date date not null,
+	forecast_date datetime not null,
 	weather_main varchar(50) not null,
 	weather_description varchar(50) null,
 	weather_icon varchar(10) null,

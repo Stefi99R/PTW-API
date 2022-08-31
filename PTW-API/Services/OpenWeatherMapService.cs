@@ -24,13 +24,16 @@ namespace PTW_API.Services
         {
             List<Forecast> forecasts = new List<Forecast>();
 
-            var cities = forecastSettings?.Cities;
-            var responses = await Task.WhenAll(cities.Select(city => httpClient.GetAsync(forecastSettings.ApiUrl
-                                                                            + $"?lat={city.Latitude}"
-                                                                            + $"&lon={city.Longitude}"
-                                                                            + $"&appid={secretsManager?.ApiKey}"
-                                                                            + $"&units=metric")));
-            var citiesAndResponses = responses.Zip(cities);
+            List<ICity> cities = forecastSettings?.Cities;
+
+            HttpResponseMessage[] responses = await Task.WhenAll(cities.Select(city => httpClient.GetAsync(
+                                                                               forecastSettings.ApiUrl
+                                                                               + $"?lat={city.Latitude}"
+                                                                               + $"&lon={city.Longitude}"
+                                                                               + $"&appid={secretsManager?.ApiKey}"
+                                                                               + $"&units=metric")));
+
+            IEnumerable<(HttpResponseMessage, ICity)> citiesAndResponses = responses.Zip(cities);
 
             foreach (var (response, city) in citiesAndResponses)
             {
@@ -58,9 +61,13 @@ namespace PTW_API.Services
 
             List<Forecast> forecasts = new List<Forecast>();
 
-            weeklyForecastDeserialized.Daily.ForEach(dailyForecast =>
+            forecasts.Add(DailyForecastDeserializedToEntity.Map(dailyForecastDeserializer: weeklyForecastDeserialized.Current,
+                                                                cityName: cityName,
+                                                                cityCountryCode: cityCountryCode));
+
+            weeklyForecastDeserialized.Daily.GetRange(1, 7).ForEach(dailyForecast =>
             {
-                forecasts.Add(ForecastDeserializedToEntity.Map(dailyForecastDeserializer: dailyForecast,
+                forecasts.Add(DailyForecastDeserializedToEntity.Map(dailyForecastDeserializer: dailyForecast,
                                                                cityName: cityName,
                                                                cityCountryCode: cityCountryCode));
             });
