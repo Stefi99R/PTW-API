@@ -5,7 +5,7 @@
     [Route("api/forecasts")]
     [ApiController]
     [Produces("application/json")]
-    public class ForecastController //: ExtendedApiController
+    public class ForecastController : ExtendedApiController
     {
 
     }
