@@ -1,13 +1,14 @@
 ﻿namespace PTW_API.Controllers
 {
+    using FluentResults;
     using Microsoft.AspNetCore.Mvc;
-    using Common.Results;
+    using PTW.Domain.Services;
 
     public class ExtendedApiController : ControllerBase
     {
         protected IActionResult OkOrError<T>(Result<T> result)
         {
-            IActionResult errorResponse = GetErrorResponse(result);
+            IActionResult? errorResponse = GetErrorResponse<T>(result);
 
             if (errorResponse != null)
             {
@@ -17,29 +18,28 @@
             return Ok(result);
         }
 
-        protected IActionResult OkOrError(ResultCommonLogic result)
+        private IActionResult? GetErrorResponse<T>(Result<T> result)
         {
-            IActionResult errorResponse = GetErrorResponse(result);
-
-            if (errorResponse != null)
-            {
-                return errorResponse;
-            }
-
-            return Ok(result);
-        }
-
-        private IActionResult? GetErrorResponse(ResultCommonLogic result)
-        {
-            if (result.IsFailure)
+            if (result.IsFailed)
             {
                 IActionResult errorResponse = new ObjectResult(result)
                 {
-                    DeclaredType = typeof(ResultCommonLogic),
-                    StatusCode = (int)result.HttpStatusCode
+                    DeclaredType = typeof(T),
+                    StatusCode = ConvertToHttpStatusCode<T>(result)
                 };
 
                 return errorResponse;
+            }
+
+            return null;
+        }
+
+        private int? ConvertToHttpStatusCode<T>(Result<T> result)
+        {
+            switch(result.Reasons[0])
+            {
+                case ResultErrorCodes:
+                    return 500;
             }
 
             return null;

@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PTW.Tests", "PTW.Tests\PTW.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PTW.Domain", "PTW.Domain\PTW.Domain.csproj", "{A546E5FD-0C99-45D4-A0DD-2F937A5978BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{742747F0-1F05-4916-B9E0-93F02BEF411E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{A546E5FD-0C99-45D4-A0DD-2F937A5978BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A546E5FD-0C99-45D4-A0DD-2F937A5978BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A546E5FD-0C99-45D4-A0DD-2F937A5978BB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{742747F0-1F05-4916-B9E0-93F02BEF411E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{742747F0-1F05-4916-B9E0-93F02BEF411E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{742747F0-1F05-4916-B9E0-93F02BEF411E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{742747F0-1F05-4916-B9E0-93F02BEF411E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
