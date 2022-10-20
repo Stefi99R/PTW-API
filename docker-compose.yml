@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.7'
 
 services:
   db:
@@ -26,6 +26,38 @@ services:
       context: .
       dockerfile: PTW-API/Dockerfile
     restart: always
+  elasticsearch:
+    container_name: PTW.ElasticSearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.4.3
+    ports: 
+        - 9200:9200
+    volumes:
+        - esdata:/usr/share/elasticsearch/data
+    environment:
+        - xpack.monitoring.templates.enabled=true
+        - xpack.watcher.enabled=false
+        - ES_JAVA_OPTS=-Xms512m -Xmx512m
+        - discovery.type=single-node
+        - xpack.security.enabled=false
+    networks:
+      - es-net
+  kibana:
+    container_name: PTW.Kibana
+    image: docker.elastic.co/kibana/kibana:8.4.3
+    ports:
+        - 5601:5601
+    depends_on:
+        - elasticsearch
+    environment:
+        - ELASTICSEARCH_HOSTS=http://PTW.ElasticSearch:9200
+    networks:
+      - es-net
+volumes: 
+  esdata:
+    driver: local
+networks:
+  es-net:
+    driver: bridge
   #seq:
   #  image: datalust/seq:latest
   #  ports:
