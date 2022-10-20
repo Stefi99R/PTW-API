@@ -1,0 +1,50 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
+  "settings": {
+    "indentation": {
+      "indentationSize": 4,
+      "tabSize": 4,
+      "useTabs": true
+    },
+    "spacingRules": {},
+    "readabilityRules": {
+      "allowBuiltInTypeAliases": false
+    },
+    "orderingRules": {
+      "usingDirectivesPlacement": "insideNamespace",
+      "blankLinesBetweenUsingGroups": "allow",
+      "systemUsingDirectivesFirst": true,
+      "elementOrder": ["kind", "constant", "static", "readonly"]
+    },
+    "namingRules": {
+      "allowCommonHungarianPrefixes": true,
+      "allowedHungarianPrefixes": [],
+      "allowedNamespaceComponents": [],
+      "includeInferredTupleElementNames": true,
+      "tupleElementNameCasing": "camelCase"
+    },
+    "maintainabilityRules": {
+      "topLevelTypes": ["class", "interface", "enum"]
+    },
+    "layoutRules": {
+      "newlineAtEndOfFile": "require",
+      "allowConsecutiveUsings": false,
+      "allowDoWhileOnClosingBrace": false
+    },
+    "documentationRules": {
+      "companyName": "Stefi99R",
+      "copyrightText": "Copyright (c) Stefi99R. All rights reserved.",
+      "variables": {},
+      "xmlHeader": true,
+      "headerDecoration": "-----------------------------------------------------------------------",
+      "documentInterfaces": true,
+      "documentExposedElements": true,
+      "documentInternalElements": false,
+      "documentPrivateElements": false,
+      "documentPrivateFields": false,
+      "documentationCulture": "en-US",
+      "fileNamingConvention": "stylecop",
+      "excludeFromPunctuationCheck": []
+    }
+  }
+}

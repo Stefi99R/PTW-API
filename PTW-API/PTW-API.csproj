@@ -9,7 +9,12 @@
     <UserSecretsId>55ad7652-f95d-4851-b82c-307ac8c612ec</UserSecretsId>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <CodeAnalysisRuleSet>settings.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />
@@ -25,6 +30,7 @@
     <PackageReference Include="MySqlConnector" Version="2.1.11" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
+    <PackageReference Include="StyleCop" Version="6.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.4" />
