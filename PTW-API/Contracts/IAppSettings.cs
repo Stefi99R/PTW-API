@@ -2,6 +2,9 @@
 {
     using PTW_API.Settings;
 
+    /// <summary>
+    /// Abstraction for fetching app settings.
+    /// </summary>
     public interface IAppSettings
     {
         /// <summary>

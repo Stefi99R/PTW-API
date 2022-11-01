@@ -59,7 +59,7 @@
             {
                 Authorization = new[] 
                 { 
-                    new HangfireAuthFilter(jobsSettings.JobsServerUsername, jobsSettings.JobsServerPassword) 
+                    new HangFireAuthFilter(jobsSettings.JobsServerUsername, jobsSettings.JobsServerPassword) 
                 },
                 DisplayStorageConnectionString = true,
                 IgnoreAntiforgeryToken = true
