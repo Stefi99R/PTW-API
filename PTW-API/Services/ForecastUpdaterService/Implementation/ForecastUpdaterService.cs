@@ -1,8 +1,9 @@
-﻿namespace PTW_API.Services
+﻿namespace PTW_API.Services.ForecastUpdaterService.Implementation
 {
     using PTW_API.Contracts;
     using System.Threading.Tasks;
     using PTW.Domain.Storage.Forecast.Domain;
+    using PTW_API.Services.ForecastUpdaterService.Abstraction;
     using PTW.Domain.Storage.Forecast.Repositories.Abstractions;
 
     public class ForecastUpdaterService : IForecastUpdaterService

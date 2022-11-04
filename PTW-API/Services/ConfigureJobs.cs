@@ -5,6 +5,7 @@
     using Newtonsoft.Json;
     using PTW_API.Contracts;
     using PTW_API.Filters;
+    using PTW_API.Services.ForecastUpdaterService.Abstraction;
     using TimeZoneConverter;
 
     public static class ConfigureJobs
