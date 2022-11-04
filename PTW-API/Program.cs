@@ -35,6 +35,8 @@ else
     app.UseHsts();
 }
 
+app.AddPTWMiddlewares();
+
 app.MapControllers();
 
 app.UseStaticFiles()
